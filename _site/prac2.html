@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Practical 2 – Introduction to R</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CASA0005</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="prac1.html">Practical 1</a>
+</li>
+<li>
+  <a href="prac2.html">Practical 2</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Practical 2 – Introduction to R</h1>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>This Practical is <strong>LONG</strong> but it will take you from not knowing anything about R to making freaking cool interactive maps in one practial. As you can imagine, this will be a steep learning curve.</p>
+<p>I will give you all the code you need, it’s your job to read through the text very carefully and try to understand what bits of code are doing as you go.</p>
+<p>There will be bits of code you don’t fully understand. Don’t worry, the key is to revisit later and try to work out what is going on then. Learning R is a long and iterative process and this is just the start…</p>
+<p>If you want to learn more about R and indeed download the latest version for your own use, then visit the R project pages: <a href="http://www.r-project.org/" class="uri">http://www.r-project.org/</a></p>
+<p>The Wikipedia page for those who want to know a little of the history of R can be found here: <a href="http://en.wikipedia.org/wiki/R_(programming_language)" class="uri">http://en.wikipedia.org/wiki/R_(programming_language)</a></p>
+<p>There is an almost endless supply of good R tutorials on the web. If you get stuck or want to learn even more R (and why would you not want to?!), I’d recommend trying some of the following R Tutorial websites:</p>
+<ul>
+<li><p><a href="http://www.statmethods.net/index.html" class="uri">http://www.statmethods.net/index.html</a></p></li>
+<li><p><a href="http://www.r-tutor.com/" class="uri">http://www.r-tutor.com/</a></p></li>
+<li><p><a href="http://www.cyclismo.org/tutorial/R/index.html" class="uri">http://www.cyclismo.org/tutorial/R/index.html</a></p></li>
+<li><p><a href="http://www.cookbook-r.com/" class="uri">http://www.cookbook-r.com/</a></p></li>
+</ul>
+<p>If you want to really be up to date with the state of the art in R, then <a href="https://bookdown.org/" class="uri">https://bookdown.org/</a> is a fantastic resource. It features free books by some of the pre-eminent names in the R scene - I would urge you to go and take a look.</p>
+</div>
+<div id="learning-outcomes" class="section level1">
+<h1><span class="header-section-number">2</span> Learning outcomes</h1>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+<div id="online-forums-are-your-friend" class="section level2">
+<h2><span class="header-section-number">2.1</span> Online forums are your friend!!</h2>
+<p>With almost every problem you encounter with R, someone else will have had the same problem before you and posted it on a forum – someone will then post a solution below.</p>
+<p>My usual route is to google the problem and I’ll then be directed to a post, usually on StackOverflow, StackExchange or CrossValidated. I’ve rarely not found a solution to a problem this way.</p>
+</div>
+<div id="health-warning" class="section level2">
+<h2><span class="header-section-number">2.2</span> Health warning</h2>
+<p>Beware of posting questions on these forums yourself – contributors to these forums (especially the R ones!), whilst almost always extremely knowledgeable about R, have a bit of a reputation for being insert familiar pejorative term for less-than-polite-human-being here! As you might expect, people who have enough time to become total experts in R, have little time to work on their social skills!! Fortunately though, some other poor chump has usually taken that hit for you and you can still find a useful answer to your problem.</p>
+<p>If you are specifically more interested in the spatial side of R, then Alex Singleton and Chris Brunsdon at the Universities of Liverpool and Maynooth also have a number of very useful R Spatial Tutorials – <a href="http://rpubs.com/alexsingleton/" class="uri">http://rpubs.com/alexsingleton/</a> &amp; <a href="http://rpubs.com/chrisbrunsdon/" class="uri">http://rpubs.com/chrisbrunsdon/</a></p>
+<p>Robin Lovelace in Leeds is also frequently at the bleeding edge of developments in R spatial stuff, so keep an eye on his website too: <a href="http://robinlovelace.net/" class="uri">http://robinlovelace.net/</a>. Robin is also in the process of completing a book on GeoComputation in R, which you should definitely read! - <a href="https://geocompr.robinlovelace.net/" class="uri">https://geocompr.robinlovelace.net/</a></p>
+<p>These websites are also very very good: <a href="https://pakillo.github.io/R-GIS-tutorial/" class="uri">https://pakillo.github.io/R-GIS-tutorial/</a> and <a href="http://www.maths.lancs.ac.uk/~rowlings/Teaching/UseR2012/cheatsheet.html" class="uri">http://www.maths.lancs.ac.uk/~rowlings/Teaching/UseR2012/cheatsheet.html</a></p>
+</div>
+<div id="r-and-rstudio" class="section level2">
+<h2><span class="header-section-number">2.3</span> R and RStudio</h2>
+<p>When you download and install R, you get the R Graphical User Interface (GUI) as standard (below). This is fine and some purists prefer using the clean, unfussy command-line original, but it has some limitations such as no graphical way to view data tables or keep track of what is in your working directory (there are a number of others too).</p>
+<p><img src="prac2_images/R.png" width="500px" style="display: block; margin: auto;" /></p>
+<p>Fortunately there are a number of software environments that have been developed for R to make it a little more user-friendly; the best of these by a long way is RStudio. RStudio can be downloaded for free from <a href="https://www.rstudio.com/" class="uri">https://www.rstudio.com/</a>. We covered the RStudio layout last week.</p>
+</div>
+<div id="getting-started" class="section level2">
+<h2><span class="header-section-number">2.4</span> Getting started</h2>
+<p>If you are some kind of masochist, you are welcome to use the bundled R GUI for all of your work. If pain is not your thing, then for this practical (and future practicals) I will assume that you are using RStudio.</p>
+<ol style="list-style-type: decimal">
+<li>From the start menu on your computer, find and run R Studio</li>
+</ol>
+<p>Once RStudio has opened, the first thing we will do is create a new project – projects enable you to organise your work effectively and store all of the files you create and work with for a particular task. 2. To create a new project (and this will vary a little depending on the version of RStudio you are using), either select File &gt; New Project… or Project &gt; Create Project</p>
+<p><img src="prac2_images/r_newproject.png" width="500px" style="display: block; margin: auto;" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Select Start a project in a brand new working directory and create a new project in a directory of a new ‘wk2’ directory on your N: drive:</li>
+</ol>
+<p><img src="prac2_images/new_proj.png" width="500px" style="display: block; margin: auto;" /></p>
+<p>My file directory (the second box here) will be different to yours as this is my teaching resources folder. Keep yours simple N:/GIS/wk2.</p>
+<p>RStudio should now open with three windows – the main R console on the left, with windows for your environment and files on the right.</p>
+</div>
+<div id="basics" class="section level2">
+<h2><span class="header-section-number">2.5</span> Basics</h2>
+<ol style="list-style-type: decimal">
+<li>R has a very steep learning curve, but hopefully it won’t take long to get your head around the basics. For example, at its most simple R can be used as a calculator. In the console window (bottom left), just type the following and press enter:</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="dv">1</span><span class="op">+</span><span class="dv">5</span></a></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<p>or</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="dv">4</span><span class="op">*</span><span class="dv">5</span><span class="op">^</span><span class="dv">2</span></a></code></pre></div>
+<pre><code>## [1] 100</code></pre>
+<p>As you can see R performs these calculations instantly and prints the results in the console. This is useful for quick calculations but less useful for writing scripts requiring multiple operations or saving these for future use.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><p>To save your scripts, you should create a new R Script file. Do this now: Select File &gt; New File &gt; R Script.</p></li>
+<li><p>The R Script should open up on the top-left of your GUI. <strong>From now on type everything in this R script file and save it</strong></p></li>
+</ol>
+</div>
+<div id="r-scripts-and-some-basic-r-commands" class="section level2">
+<h2><span class="header-section-number">2.6</span> R Scripts and some basic R commands</h2>
+<ol start="4" style="list-style-type: decimal">
+<li>Usually one of the first things to do when starting a new R Script is to check that you are in the correct working directory. This is important especially if you are working on multiple projects in different locations. To do this type the following into your new empty R Script:</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">getwd</span>()</a></code></pre></div>
+<pre><code>## [1] &quot;C:/Users/Andy/Documents/Teaching/CASA0005&quot;</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li><p>To run this line, hold *Ctrl (Cmd on a Mac) and press the Return(↲) key (if you are in the standard R installation, you would run your script with Ctrl R). You should now see your current working directory appear in the console.</p></li>
+<li><p>Because of the new project we have already set up, this working directory should be correct, but if for any reason we wanted to change the working directory, we would use the setwd() function. For example, we wanted to change our directory to the documents folder on the C drive, we could run (don’t do this now):</p></li>
+</ol>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">setwd</span>(<span class="st">&quot;C:/Documents&quot;</span>)</a></code></pre></div>
+<ol start="7" style="list-style-type: decimal">
+<li><p>When we are sure we are working in the correct working directory, we can save our script by clicking on the save icon on the script tab. Save your script as something like “wk2_part1” and you will see it appear in your files window on the right hand side. As you build up a document of R code, you should get into the habit of saving your script periodically in case of an unexpected software crash.</p></li>
+<li><p>We can now begin to write a script without the need to run each line every time we press enter. In the script editor type:</p></li>
+</ol>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">A &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb8-2" title="2">B &lt;-<span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb8-3" title="3">C &lt;-<span class="st"> </span>A<span class="op">+</span>B</a>
+<a class="sourceLine" id="cb8-4" title="4">C</a></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<ol start="9" style="list-style-type: decimal">
+<li><p>Select (highlight) the three lines and run all three lines with Ctrl Return(↲). You will notice the lines appear in the console (the other window). If you type C and press enter in the console (C and then ctrl return in the script window) you should have the number 3 appear. From now on I recommend you type all the commands below in the script first and then run them. Copying and pasting from this document won’t necessarily work.</p></li>
+<li><p>You will also notice that in RStudio, values A, B and C will appear in your workspace window (top right). These variables are stored in memory for future use. Try giving A and B different values and see what happens. What about if you use lower case letters?</p></li>
+<li><p>You have just demonstrated one of the powerful aspects of R, which is that it is an <strong>object oriented</strong> programming language. A, B and C are all objects that have been assigned a value with the &lt;- symbol (you can also use the = sign, but it operates slightly differently to &lt;- in R, plus the arrow assignment has become standard over the years. Use <strong>alt -</strong> to type it automatically). This principle underlies the whole language and enables users to create ever more complex objects as they progress through their analysis. If you type:</p></li>
+</ol>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">ls</span>()</a></code></pre></div>
+<pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
+<p>R will produce a list of objects that are currently active.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">rm</span>(A)</a></code></pre></div>
+<p>will remove the object A from the workspace (do ls() again to check this or look in your workspace window).</p>
+</div>
+<div id="functions" class="section level2">
+<h2><span class="header-section-number">2.7</span> Functions</h2>
+<ol start="12" style="list-style-type: decimal">
+<li>Both rm() and ls() are known as functions. Functions are the other fundamental aspect to the R language. Functions can be thought of as single or multiple calculations that you apply to objects. They generally take the form of:</li>
+</ol>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="cf">function</span>(object, parameter1, parameter2, parameter3...)</a></code></pre></div>
+<ol start="13" style="list-style-type: decimal">
+<li>You can write your own functions to carry out tasks (and we’ll come onto that in subsequent practical sessions), but normally you will just used one of the virtually infinite number of functions that other people have already written for us.</li>
+</ol>
+</div>
+<div id="basic-plotting" class="section level2">
+<h2><span class="header-section-number">2.8</span> Basic plotting</h2>
+<p>For example, one common function is the <code>plot()</code> function for displaying data as a graphical output. Add these lines to your script and run them as before and you can see some <code>plot()</code> outputs:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co">#create some datasets, first a vector of 1-100 and 101-200</span></a>
+<a class="sourceLine" id="cb14-2" title="2">Data1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb14-3" title="3">Data2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">101</span><span class="op">:</span><span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="co">#Plot the data</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="kw">plot</span>(Data1, Data2, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
+<p><img src="prac2_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co">#just for fun, create some more, this time some normally distributed</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="co">#vectors of 100 numbers</span></a>
+<a class="sourceLine" id="cb15-3" title="3">Data3 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dt">mean =</span> <span class="dv">53</span>, <span class="dt">sd=</span><span class="dv">34</span>)</a>
+<a class="sourceLine" id="cb15-4" title="4">Data4 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dt">mean =</span> <span class="dv">64</span>, <span class="dt">sd=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="co">#plot</span></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="kw">plot</span>(Data3, Data4, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</a></code></pre></div>
+<p><img src="prac2_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<ol start="14" style="list-style-type: decimal">
+<li>In the code above, you will have noticed the # symbol. This signifies that whatever comes after it on that line is a comment. Comments are ignored by the R console and they allow you to annotate your code so that you know what it is doing. It is good programming practice to comment your code extensively so that you can keep track of what your scripts are for.</li>
+</ol>
+</div>
+<div id="help" class="section level2">
+<h2><span class="header-section-number">2.9</span> Help</h2>
+<ol start="15" style="list-style-type: decimal">
+<li>The previous lines of code also demonstrated a number of functions: c() concatenates a string of numbers together into a vector. 1:100 means produce the integers between and including 1:100, the plot() function plots the two data objects and includes a parameter to change the colour of the points. To understand what a function does, you can consult the R Help system. Simply type a question mark and then the function name; for example:</li>
+</ol>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">?plot</a></code></pre></div>
+<p><img src="prac2_images/rhelp.png" width="300px" style="display: block; margin: auto;" /></p>
+<ol start="16" style="list-style-type: decimal">
+<li>In RStudio you will see the help file appear in the Help window in the bottom right of the GUI. Here you can also search for the help files for other functions in the search bar.</li>
+</ol>
+</div>
+<div id="data-types---data-drames" class="section level2">
+<h2><span class="header-section-number">2.10</span> Data types - Data Drames</h2>
+<ol start="17" style="list-style-type: decimal">
+<li>Objects in R can exist as a number of different data types. These include a <strong>matrix</strong>, a <strong>vector</strong>, a <strong>data frame</strong> and a <strong>list</strong>. For the purposes of this practical we will focus on data frames. These are the most flexible data format in R (although tibbles are now becoming popular as well). Data frames can be conceptualised in a similar way to a spreadsheet with data held in rows and columns. They are the most commonly used object type in R and the most straightforward to create from the two vector objects we just created.</li>
+</ol>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(Data1, Data2)</a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="kw">plot</span>(df, <span class="dt">col=</span><span class="st">&quot;green&quot;</span>)</a></code></pre></div>
+<p><img src="prac2_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<ol start="18" style="list-style-type: decimal">
+<li>If you have a very large data frame (thousands or millions of rows) it is useful to see only a selection of these. There are several ways of doing this:</li>
+</ol>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co">#show the first 10 and then last 10 rows of data in df...</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="kw">head</span>(df)</a></code></pre></div>
+<pre><code>##   Data1 Data2
+## 1     1   101
+## 2     2   102
+## 3     3   103
+## 4     4   104
+## 5     5   105
+## 6     6   106</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">tail</span>(df)</a></code></pre></div>
+<pre><code>##     Data1 Data2
+## 95     95   195
+## 96     96   196
+## 97     97   197
+## 98     98   198
+## 99     99   199
+## 100   100   200</code></pre>
+<p>You can also view elements of your data frame in RStudio by simply clicking on it in the top-right Environment window:</p>
+<p><img src="prac2_images/dataview.png" width="800px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="accessing-elements-of-a-data-frame" class="section level2">
+<h2><span class="header-section-number">2.11</span> Accessing elements of a data frame</h2>
+<ol start="19" style="list-style-type: decimal">
+<li>When programming you will frequently want to refer to different elements in a data frame or a vector/list. To select elements of a data frame, or subset it, you can refer specifically to ranges or elements of rows and columns. These are accessed using the single square bracket operator [], with the form:</li>
+</ol>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1">data.frame[row,column]</a></code></pre></div>
+<p>Rows are always referenced first, before the comma, columns second, after the comma.</p>
+<ol start="20" style="list-style-type: decimal">
+<li>Try the subsetting your df data frame with the following commands to see what is returned:</li>
+</ol>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1">df[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">1</span>]</a></code></pre></div>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">df[<span class="dv">5</span><span class="op">:</span><span class="dv">15</span>,]</a></code></pre></div>
+<pre><code>##    Data1 Data2
+## 5      5   105
+## 6      6   106
+## 7      7   107
+## 8      8   108
+## 9      9   109
+## 10    10   110
+## 11    11   111
+## 12    12   112
+## 13    13   113
+## 14    14   114
+## 15    15   115</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1">df[<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">6</span>),<span class="dv">2</span>]</a></code></pre></div>
+<pre><code>## [1] 102 103 106</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1">df[,<span class="dv">1</span>]</a></code></pre></div>
+<pre><code>##   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+##  [18]  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34
+##  [35]  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51
+##  [52]  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68
+##  [69]  69  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85
+##  [86]  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100</code></pre>
+<ol start="21" style="list-style-type: decimal">
+<li>You will note that the column headings are the names of the original objects creating the data frame. We can change these using the <code>colnames()</code> function:</li>
+</ol>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">colnames</span>(df)&lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;column1&quot;</span>, <span class="st">&quot;column2&quot;</span>)</a></code></pre></div>
+<p>To select or refer to these columns directly by name, we can either use the <code>$</code> operator, which takes the form <code>data.frame$columnName</code>, e.g.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1">df<span class="op">$</span>column1</a></code></pre></div>
+<pre><code>##   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+##  [18]  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34
+##  [35]  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51
+##  [52]  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68
+##  [69]  69  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85
+##  [86]  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100</code></pre>
+<p>or we can use the double square bracket operator [[]], and refer to our column by name using quotes e.g.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1">df[[<span class="st">&quot;column1&quot;</span>]]</a></code></pre></div>
+<pre><code>##   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+##  [18]  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34
+##  [35]  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51
+##  [52]  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68
+##  [69]  69  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85
+##  [86]  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100</code></pre>
+<p>This again is useful if you have a lot of columns and you wish to efficiently extract one of them.</p>
+</div>
+</div>
+<div id="reading-data-into-r" class="section level1">
+<h1><span class="header-section-number">3</span> Reading data into R</h1>
+<p>One of the most tedious things a spatial analyst / data scientist has to do is clean their data so it doesn’t cause problems for the software later. In the past, we would have needed to do this by hand - these days, we can use software to do much of this for us.</p>
+<p>I will now give you two options to arrive at a nice cleaned dataset. If you have issues with software packages etc, you might still need to via the old skool route, however, the new skool route will be much more satisfying if it works!</p>
+<p>For this example we are going to use the London Datastore Catalogue.</p>
+<p>Go to: <a href="https://data.london.gov.uk/dataset/london-datastore-catalogue" class="uri">https://data.london.gov.uk/dataset/london-datastore-catalogue</a> and download the excel document.</p>
+<div id="old-skool-cleaning" class="section level2">
+<h2><span class="header-section-number">3.1</span> Old Skool Cleaning</h2>
+<ol start="22" style="list-style-type: decimal">
+<li><p>Open the <code>LondonData.xls</code> file in Excel, and save as <code>LondonData.csv</code> into your wk2/RProject folder.</p></li>
+<li><p>Open your new <code>.csv</code> file in Excel. There might be some non-numeric values inside numeric columns which will cause problems in your analysis. These need to be removed before proceeding any further. To remove these, you can use the replace function in Excel. In the home tab under ‘Editing’ open up the find and replace dialogue box and enter the following into the find box:</p></li>
+</ol>
+<p><code>#VALUE!</code> <code>#n/a</code></p>
+<p>Leave the replace box empty each time and click Replace All to remove these from your file, before saving the file again.</p>
+<ol start="24" style="list-style-type: decimal">
+<li>Once you have cleaned out all of the trixy characters from the file, to read it into R, we will use the read.csv() function:</li>
+</ol>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1">LondonDataOSK&lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;prac2_data/london_catalogue.csv&quot;</span>)</a></code></pre></div>
+<p><em>Note</em>, i’ve made an R project for all these practicals, which is why my file path starts with <code>prac2_data/</code>. If you save the <code>.csv</code> in the same folder as the <code>.Rproj</code> then you can just use:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1">LondonDataOSK&lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;LondonData.csv&quot;</span>)</a></code></pre></div>
+<p>If you look at the <code>read.csv()</code> help file - <code>?read.csv</code> - you will see that we can actually include many more parameters when reading in a .csv file. For example, we could read in the same file as follows:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1"><span class="co"># by default in R, the file path should be defined with / but on a #windows file system it is defined with \. Using \\ instead allows R #to read the path correctly – alternatively, just use /</span></a>
+<a class="sourceLine" id="cb38-2" title="2">LondonData&lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;prac2_data/london_catalogue.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>)</a></code></pre></div>
+<p>This would specify the exact path; that the first row of the file contains header information; and the values in the file are separated with commas (not ; or : as can be the case sometimes).</p>
+</div>
+<div id="new-skool-cleaning" class="section level2">
+<h2><span class="header-section-number">3.2</span> New skool cleaning</h2>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

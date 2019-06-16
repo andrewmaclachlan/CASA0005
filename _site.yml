@@ -1,0 +1,8 @@
+name: "CASA0005"
+navbar:
+  title: "CASA0005"
+  left:
+    - text: "Practical 1"
+      href: prac1.html
+    - text: "Practical 2"
+      href: prac2.html
