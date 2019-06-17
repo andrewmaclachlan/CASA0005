@@ -313,13 +313,13 @@ To clean our data as we read it in, we are going to use a package (more about pa
 
 Anyway, first install the package:
 
-```{r}
+```{r, message=FALSE, eval=FALSE}
 install.packages("tidyverse", repos = "https://www.stats.bris.ac.uk/R/")
 ```
 
-Now we can use the readr package which comes bundled as part of the tidyverse to read in some data (directly from the web this time - read.csv can do this too) and clean text characters out from the numeric columns before they cause problems:
+Now we can use the ```readr``` package which comes bundled as part of the tidyverse to read in some data (directly from the web this time - read.csv can do this too) and clean text characters out from the numeric columns before they cause problems:
 
-```{r}
+```{r, message=FALSE}
 library(tidyverse)
 #wang the data in straight from the web using read_csv, skipping over the 'n/a' entries as you go...
 LondonData <- read_csv("https://files.datapress.com/london/dataset/ward-profiles-and-atlas/2015-09-24T14:21:24/ward-profiles-excel-version.csv", na = "n/a")
@@ -335,12 +335,430 @@ LondonData <- read_csv("https://files.datapress.com/london/dataset/ward-profiles
 class(LondonData)
 ```
 
-```{r}
+```{r, eval=FALSE}
 # or, if you have your old skool data from step 24 above
 class(LondonDataOSK)
 ```
 
 We can also use the ```class``` function within another two functions (cbind() and lapply()) to check that our data has been read in correctly and that, for example, numeric data haven’t been read in as text or other variables. Run the following line of code:
+
+```{r}
+datatypelist <- data.frame(cbind(lapply(LondonData,class)))
+```
+
+You should see that all columns that should be numbers are read in as numeric. Try reading in LondonData again, but this time without excluding the ‘n/a’ values in the file, e.g.
+
+```{r, message=FALSE}
+LondonData <- read_csv("https://files.datapress.com/london/dataset/ward-profiles-and-atlas/2015-09-24T14:21:24/ward-profiles-excel-version.csv")
+```
+
+Now run the datatypelist function again - you should see that some of the columns (those the n/a values in) have been read in as something other than numeric. This is why we need to exclude them. Isn’t ```readr``` great for helping us avoid reading in our numeric data as text!
+```{r, eval=FALSE}
+LondonData <- edit(LondonData)
+```
+
+27. It is also possible to quickly and easily summarise the data or look at the column headers using
+
+```{r}
+summary(df)
+```
+
+```{r, message=FALSE}
+names(LondonData)
+```
+
+## Data manipulation in R
+
+Now we have some data read into R, we need to select a small subset to work on. The first thing we will do is select just the London Boroughs to work with. If you recall, the Borough data is at the bottom of the file.
+
+### Selecting rows
+
+29. Your borough data will probably be found between rows 626 and 658. Therefore we will first create a subset by selecting these rows into a new data frame and then reducing that data frame to just four columns. There are a few ways of doing this:
+
+We could select just the rows we need by explicitly specifying the range of rows we need:
+
+```{r}
+LondonBoroughs<-LondonData[626:658,]
+```
+
+There is also a ```subset()``` function in R. You could look that up and see whether you could create a subset with that. Or, we could try a cool ‘data sciency’ way of pulling out the rows we want with the knowledge that the codes for London Boroughs start with E09 (the wards in the rest of the file start with E05).
+
+Knowing this, we can use the ```grep()``` function which can use regular expressions to match patterns in text. Let’s try it!
+
+```{r, message=FALSE, warning = FALSE}
+LondonData <- data.frame(LondonData)
+LondonBoroughs <- LondonData[grep("^E09",LondonData[,3]),]
+```
+
+Check it worked:
+
+```{r,eval=FALSE}
+head(LondonBoroughs)
+```
+
+
+**AWWMAHGAWD!!!** Pretty cool hey?
+
+What that function is saying is *“grep (get) me all of the rows from the London Data data frame where the text in column 3 starts with (^) E09”*
+
+You will notice that you will have two rows at the top for the City of London. This is becuase it features twice in the data set. That’s fine, we can just drop this row from our dataset:
+
+```{r}
+LondonBoroughs <- LondonBoroughs[2:34,]
+```
+
+### Selecting columns
+
+```{r}
+LondonBoroughs<-LondonBoroughs[,c(1,19,20,21)]
+```
+
+30. You will have noticed the use of square brackets above – these are very useful in R. Refer back to points 19-21 above if you can’t remember how they work. The c() function is also used here – this is the ‘combine’ function - another very useful function in R which allows arguments (in this case, column reference numbers) into a single value
+
+### Renaming columns
+
+31. You will notice that the column names are slightly misleading as we are now working with boroughs rather than wards. We can rename the columns to something more appropriate using the ```names()``` function (there are various other functions for renaming columns - for example ```colnames()``` if you want to rename multiple columns:
+
+```{r}
+#rename the column 1 in LondonBoroughs
+names(LondonBoroughs)[1] <- c("Borough Name")
+```
+
+## Plotting
+
+```{r}
+plot(LondonBoroughs$Male.life.expectancy..2009.13, LondonBoroughs$X..children.in.reception.year.who.are.obese...2011.12.to.2013.14)
+```
+
+## Pimp my graph!
+
+Now, of course, because this is R, we can pimp this graph using something a bit more fancy than the base graphics functions:
+
+```{r, eval=FALSE}
+install.packages("plotly", repos = "https://www.stats.bris.ac.uk/R/")
+
+```
+
+```{r, message=FALSE}
+library(plotly)
+plot_ly(LondonBoroughs, x = ~Male.life.expectancy..2009.13, y = ~X..children.in.reception.year.who.are.obese...2011.12.to.2013.14, text = ~LondonBoroughs$`Borough Name`, type = "scatter", mode = "markers")
+```
+
+## Spatial Data in R
+
+This next part of the practical applies the same principles introduced above to the much more complex problem of handling spatial data within R. In this workshop we will produce a gallery of maps using many of the plotting tools available in R. The resulting maps will not be that meaningful- the focus here is on sound visualisation with R and not sound analysis (I know one is useless without the other!). Good quality spatial analysis will come in the rest of the module.
+
+Whilst the instructions are step by step you are encouraged to start deviating from them (trying different colours for example) to get a better understanding of what we are doing.
+
+### Packages
+
+In this section we’ll require even more specialist packages, so I should probably spend some more time explaining what packages actually are! Packages are bits of code that extend R beyond the basic statistical functionality it was originally designed for. For spatial data, they enable R to process spatial data formats, carry out analysis tasks and create some of the maps that follow.
+
+Bascially, without packages, R would be very limited. With packages, you can do virtually anything! One of the issues you will come across is that packages are being continually developed and updated and unless you keep your version of R updated and your packages updated, there may be some functions and options not available to you. This can be a problem, particularly with University installations which (at best) may only get updated once a year. Therefore, apologies in advance if things don’t work as intended!
+
+1. In R Studio all packages can be installed and activated in the ‘Packages’ tab in the bottom-right hand window:
+
+```{r echo=FALSE, out.width = "500px", fig.align='center'}
+knitr::include_graphics('prac2_images/r_packages.png') 
+```
+
+2. As with everything else in R though, we can also run everything from the command line. The first package we need to install for this part of the practical is ```maptools``` – either find and install it using the RStudio GUI or do the following:
+
+```{r, eval=FALSE}
+install.packages("maptools")
+```
+
+There are a few other packages we’ll need to get to grips with. Some, like ```ggplot2``` (one of the most influential R packages ever) are part of the ```tidyverse``` package we came across earlier. Others we will need to install for the first time.
+
+```{r, eval=FALSE}
+install.packages(c("OpenStreetMap", "classInt", "tmap"))
+
+install.packages(c("RColorBrewer", "sp", "rgeos", "tmaptools", "sf", "downloader", "rgdal", "geojsonio"))# might also need these ones
+```
+
+4. Now that the packages have been installed you will not have to repeat the above steps again (when you use your account in these cluster rooms). Open a new script and save it to your working directory as “wk3_maps.r”. As before, type each of the lines of code into this window and then select and use the ctrl return keys to run them. Be sure to save your script often.
+
+5. The first task is to load the packages we have just installed. note, you might have some issues with the OpenStreetMap package if your installation of java on your computer doesn’t match your installation of R – e.g. if you have installed the 64bit version of R, you also need the 64bit version of java (same with the 32bit versions) - you may also need to install the package Rcpp separately and try again.
+
+Install Java 64-bit from: https://java.com/en/download/manual.jsp
+
+```{r, message=FALSE}
+#Load Packages (ignore any error messages about being built under a #different R version):
+library(maptools)
+library(RColorBrewer)
+library(classInt)
+library(OpenStreetMap)
+library(sp)
+library(rgeos)
+library(tmap)
+library(tmaptools)
+library(sf)
+library(rgdal)
+library(geojsonio)
+```
+
+## Background to spatial data in R
+
+R has a very well developed ecosystem of packages for working with Spatial Data. Early pioneers like Roger Bivand and Edzer Pebesma along with various colleagues were instrumental in writing packages to interface with some powerful open source libraries for working with spatial data, such as GDAL and GEOS. These were accessed via the ```rgdal``` and ```rgeos``` packages. The  ```maptools``` package by Roger Bivand, amongst other things, allowed Shapefiles to be read into R. The ```sp``` package (along with  ```spdep```) by Edzer Pebesma was very important for defining a series of classes and methods for spatial data natively in R which then allowed others to write software to work with these formats. Other packages like ```raster``` advanced the analysis of gridded spatial data, while packages like ```classint``` and ```RColorbrewer``` facilitated the binning of data and colouring of choropleth maps.
+
+Whilst these packages were extremely important for advancing spatial data analysis in R, they were not always the most straighforward to use - making a map in R could take quite a lot of effort and they were static and visually basic. However, more recently new packages have arrived to change this. Now ```leaflet``` enables R to interface with the leaflet javascript library for online, dynamic maps. ```ggplot2``` which was developed by Hadley Wickam and colleagues radically changed the way that people thought about and created graphical objects in R, including maps, and introduced a graphical style which has been the envy of other software to the extent that there are now libraries in Python which copy the ggplot2 style!
+
+Building on all of these, the new ```tmap``` (Thematic Map) package has changed the game completely and now enables us to read, write and manipulate spatial data and produce visually impressive and interactive maps, very easily. In parallel, the ```sf``` (Simple Features) package is helping us re-think the way that spatial data can be stored and manipulated. It’s exciting times for geographic information / spatial data science!
+
+## Making some choropleth maps
+
+Choropleth maps are thematic maps which colour areas according to some phenomenon. In our case, we are going to fill some irregular polygons (the London Boroughs) with a colour that corresponds to a particular attribute.
+
+As with all plots in R, there are multiple ways we can do this. The basic ```plot()``` function requires no data preparation but additional effort in colour selection/ adding the map key etc. ```qplot()``` and ```ggplot()``` (installed in the ggplot2 package) require some additional steps to format the spatial data but select colours and add keys etc automatically. Here, we are going to make use of the new ```tmap``` package which makes making maps very easy indeed.
+
+6. So one mega cool thing about R is you can read spatial data in straight from the internetz! Try this below for downloading a GeoJson file:
+
+```{r}
+EW <- geojson_read("http://geoportal.statistics.gov.uk/datasets/8edafbe3276d4b56aec60991cbddda50_2.geojson", what = "sp")
+```
+
+```{r}
+#pull out london using grep and the regex wildcard for'start of the string' (^) to to look for the bit of the district code that relates to London (E09) from the 'lad15cd' column in the data slot of our spatial polygons dataframe
+LondonMap <- EW[grep("^E09",EW@data$lad15cd),]
+#plot it using the base plot function
+qtm(LondonMap)
+```
+
+7. Of course, we can also read in our data from a shapefile stored in a local directory:
+
+```{r}
+#read the shapefile into a simple features object
+BoroughMapSF <- read_shape("prac1_data/statistical-gis-boundaries-london/ESRI/London_Borough_Excluding_MHW.shp", as.sf = TRUE)
+BoroughMapSP <- LondonMap
+#plot it very quickly usking qtm (quick thematic map) to check it has been read in correctly
+qtm(BoroughMapSF)
+```
+
+```{r}
+qtm(BoroughMapSP)
+```
+
+8. And naturally we can convert between simple features objects and spatialPolygonsDataFrames very easily:
+
+```{r}
+library(methods)
+#check the class of BoroughMapSF
+class(BoroughMapSF)
+```
+
+```{r}
+#And check the class of BoroughMapSP
+class(BoroughMapSP)
+```
+
+```{r}
+#now convert the SP object into an SF object...
+newSF <- st_as_sf(BoroughMapSP)
+#and try the other way around SF to SP...
+newSP <- as(newSF, "Spatial")
+#simples!
+BoroughMapSP <- as(BoroughMapSF, "Spatial")
+```
+
+## Attribute data
+
+OK, enough messing around, show us the maps!!
+
+9. Hold your horses, before be can create a map, we need to join some attribute data to some boundaries. Doing this an ```SP``` object can be a bit of a pain, but I’ll show you here:
+
+```{r}
+#join the data to the @data slot in the SP data frame
+BoroughMapSP@data <- data.frame(BoroughMapSP@data,LondonData[match(BoroughMapSP@data[,"GSS_CODE"],LondonData[,"New.code"]),])
+#check it's joined.
+#head(BoroughMapSP@data)
+```
+
+10. Joining data is a bit more intuitive with SF:
+
+```{r, warning=FALSE}
+BoroughDataMap <- append_data(BoroughMapSF,LondonData, key.shp = "GSS_CODE", key.data = "New.code", ignore.duplicates = TRUE)
+```
+
+An alternative to append_data would be to use a left-join (like in SQL)
+
+```{r}
+BoroughDataMap2 <- BoroughMapSF %>% left_join(LondonData, by = c("GSS_CODE" = "New.code"))
+```
+
+However, you would need to remove the duplicate City of London row afterwards
+
+## Making Some Maps
+
+If you want to learn a bit more about the sorts of things you can do with tmap, then there are 2 vignettes that you can access here: https://cran.r-project.org/web/packages/tmap/ - I suggest you refer to these to see the various things you can do using tmap. Here’s a quick sample though:
+
+11. We can create a choropleth map very quickly now using ```qtm```
+
+```{r}
+library(tmap)
+library(tmaptools)
+tmap_mode("plot")
+```
+
+```{r}
+qtm(BoroughDataMap, fill = "Rate.of.JobSeekers.Allowance..JSA..Claimants...2015")
+```
+
+You can also add a basemap and some other guff, if you wish…
+
+```{r}
+london_osm <- read_osm(BoroughDataMap, type = "esri", zoom = NULL)
+qtm(london_osm) + 
+  tm_shape(BoroughDataMap) + 
+  tm_polygons("Rate.of.JobSeekers.Allowance..JSA..Claimants...2015", 
+        style="jenks",
+        palette="YlOrBr",
+        midpoint=NA,
+        title="Rate per 1,000 people",
+        alpha = 0.5) + 
+  tm_compass(position = c("left", "bottom"),type = "arrow") + 
+  tm_scale_bar(position = c("left", "bottom")) +
+  tm_layout(title = "Job seekers' Allowance Claimants", legend.position = c("right", "bottom"))
+```
+
+12. how about more than one map, perhaps using different data breaks…
+
+```{r}
+tm_shape(BoroughDataMap) +
+    tm_polygons(c("Average.Public.Transport.Accessibility.score...2014", "Violence.against.the.person.rate...2014.15"), 
+        style=c("jenks", "pretty"),
+        palette=list("YlOrBr", "Purples"),
+        auto.palette.mapping=FALSE,
+        title=c("Average Public Transport Accessibility", "Violence Against the Person Rate"))
+```
+
+You will notice that to choose the colour of the maps, I entered some codes. These are the names of colour ramps from the RColourBrewer package which comes bundled with ```tmap```. ```RColorBrewer``` uses colour palettes available from the colorbrewer2 website (http://colorbrewer2.org/) which is in turn based on the work of Cynthia Brewer and colleagues at Penn State University (http://www.personal.psu.edu/cab38/ColorBrewer/ColorBrewer_updates.html). Cynthia brewer has carried out large amount of academic research into determining the best colour palettes for GIS applications and so we will defer to her expertise here.
+
+If you want to look at the range of colour palettes available, as we; as going to the ColorBrewer website, you can use the a little shiny app which comes bundled with ```tmaptools```
+
+```{r, eval=FALSE}
+#You might need to install the shinyjs paclage for this to work
+install.packages("shinyjs")
+```
+
+```{r, eval=FALSE}
+library(shinyjs)
+#it's possible to explicitly tell R which package to get the function from with the :: operator...
+tmaptools::palette_explorer()
+```
+
+13. ```tmap``` will even let you make a FRICKING INTERACTIVE MAP!!! Oh yes, we can do interactive maps…!
+
+```{r}
+tmap_mode("view")
+```
+
+```{r}
+tm_shape(BoroughDataMap) +
+    tm_polygons("X..children.in.year.6.who.are.obese..2011.12.to.2013.14",
+        style="cont",
+        palette="PuRd",
+        midpoint=NA,
+        title="Truffle Shuffle Intensity")+
+    tmap_options(max.categories = 5)
+```
+
+```{r}
+####You can even save your map as an html file (uncomment, obvs)
+#save_tmap(filename = "truffle.html")
+```
+
+## Have a play around…
+
+There are loads of options for creating maps with ```tmap``` - read the vignettes that have been provided by the developers of the package and see if you can adapt the maps you have just made - or even make some alternative maps using built in data.
+
+https://cran.r-project.org/web/packages/tmap/vignettes/tmap-nutshell.html https://cran.r-project.org/web/packages/tmap/vignettes/tmap-modes.html
+
+You should also read the reference manual on the package homepage: https://cran.r-project.org/web/packages/tmap/
+
+In fact, since I wrote this last year, the ```tmap``` package has developed quite a bit more - have a look at some of the cool examples here: https://github.com/mtennekes/tmap
+
+Have a play and see what cool shiz you can create!
+
+This is an example from the BubbleMap folder on the tmap github. Don't worry about what github is we will cover that soon.
+
+```{r, message=FALSE, warning=FALSE}
+# load spatial data included in the tmap package
+data("World", "metro")
+
+# calculate annual growth rate
+metro$growth <- (metro$pop2020 - metro$pop2010) / (metro$pop2010 * 10) * 100
+
+# plot
+tm_shape(World) +
+  tm_polygons("income_grp", palette = "-Blues", 
+    title = "Income class", contrast = 0.7, border.col = "gray30", id = "name") +
+    tm_text("iso_a3", size = "AREA", col = "gray30", root=3) +
+tm_shape(metro) +
+  tm_bubbles("pop2010", col = "growth", border.col = "black", 
+    border.alpha = 0.5,
+    breaks = c(-Inf, 0, 2, 4, 6, Inf) ,
+    palette = "-RdYlGn",
+    title.size = "Metro population (2010)", 
+    title.col = "Annual growth rate (%)",
+    id = "name",
+    popup.vars=c("pop2010", "pop2020", "growth")) + 
+tm_format("World") + 
+tm_style("gray")
+```
+
+## Making Maps Using ggplot2
+
+So as you have seen, it is possible to make very nice thematic maps with ```tmap```. However, there are other options. The  ```ggplot2``` package is a very powerful graphics package that allows us to a huge range of sophisticated plots, including maps.
+
+The latest development version of ```ggplot2``` has support for simple features objects with the new geom_sf class (http://ggplot2.tidyverse.org/reference/ggsf.html), which, quite frankly, is bloody brilliant!
+
+14. If you have not already done so, install and library the ```ggplot2``` and ```rgeos``` packages (they should be installed automatically as part of ```tidyverse``` and ```tmap``` packages, but occasionally they need to be installed separately).
+
+15. Now there are two main ways in which you can construct a plot in  ```ggplot2 ```:  ```qplot() ``` and  ```ggplot() ```.  ```qplot ``` is short for ‘Quick plot’ and can be good for producing quick charts and maps, but is perhaps less good for constructing complex layered plots.  ```ggplot() ``` is better for building up a plot layer by layer, e.g.  ```ggplot()+layer1+layer2 ```, and so this is what we will use here.
+
+16. The important elements of any ```ggplot  ``` layer are the aesthetic mappings – aes(x,y, …) – which tell ggplot where to place the plot objects. We can imagine a map just like a graph with all features mapping to an x and y axis. All geometry (  ```geom_  ```) types in ggplot feature some kind of aesthetic mapping and these can either be declared at the plot level, e.g.
+
+```{r, eval=FALSE}
+ggplot(data.frame, aes(x=x, y=y))
+```
+
+or, more flexibly at the level of the individual geom_ layer, e.g.
+
+```{r, eval=FALSE}
+geom_polygon(aes(x=x, y=y), data.frame)
+```
+
+17. To begin our plot, we will start with the map layer – we will generate this using the geom_sf() function in ```ggplot2```:
+
+```{r}
+ggplot()+geom_sf(mapping = aes(geometry=geometry),data = BoroughDataMap)+theme_minimal()
+```
+
+18. To colour your map, then just pass the name of the variable you want to map to the fill parameter in the aesthetics:
+
+```{r}
+ggplot()+geom_sf(mapping = aes(geometry=geometry, fill=Median.House.Price...U.00A3.....2014),data = BoroughDataMap)+theme_minimal()
+```
+
+19. As you can see, this map looks OK, but there are a few issues with things like the colour ramp and a lack of appropriate labels. We can correct this by adding a few more layers. Firstly we can change the palette:
+
+```{r}
+palette1<-scale_fill_continuous(low="white", high="orange", "Price(£)")
+```
+
+20. And some appropriate labels:
+
+```{r}
+labels<-labs(list(title="Average House Price 2014",x="Longitude", y="Latitude"))
+```
+
+21. Before plotting the all of them together:
+
+```{r}
+ggplot()+geom_sf(mapping = aes(geometry=geometry, fill=Median.House.Price...U.00A3.....2014),data = BoroughDataMap)+theme_minimal()+palette1+labels
+```
+
+
 
 
 

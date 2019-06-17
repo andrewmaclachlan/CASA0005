@@ -1,7 +1,7 @@
 name: "CASA0005"
 output_dir: "."
 navbar:
-  title: "CASA0005"
+  title: "Home"
   left:
     - text: "Practical 1"
       href: prac1.html
