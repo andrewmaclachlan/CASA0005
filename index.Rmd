@@ -1,9 +1,31 @@
 ---
-title: "My Website"
+title: "CASA 0005 Geographic Information Systems and Science"
+output:
+  html_document: 
+    highlight: tango
+    number_sections: yes
+    theme: yeti
+    toc: no
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+editor_options: 
+  chunk_output_type: inline
 ---
+---
+Welcome to the CASA0005 Geographic Information Systems and Science online pratical handbook. This website is hosted on Github and holds all the practical instructions and data. All data used within the peacticals is aviaiable online, however occasionally websites can undergo maintenance or be inaccessible due to political facors such as the government shutdowns.    
 
-Hello, Website!
-Another TEST HELLO 
+<font size="5"> The world of GIS </font>
 
-And adain 
-ghg
+Spatial analysis can yield fascinating insights into geographical relationships. However, at times it can be difficult to work with. You will get lots of error messages and have software crash. The academic staff are here to help you work through these practicals but we do not know everything. It's a good idea to become familar with online sources of help, such as:
+
+* Stack Exchange https://stackexchange.com/
+* QGIS documemtation https://docs.qgis.org/3.4/en/docs/index.html
+* R documentation https://www.rdocumentation.org/
+* ArcGIS help pages https://support.esri.com/en
+
+<font size="5"> Getting Started </font>
+
+One of the issues with GIS is that many of the files we will be working with are quite large. Fortunately, in recent years, UCL has seriously beefed up the storage available for students. You now get 100GB of free storage, which should be plenty for the work you will be doing this year! The Bartlett faculty has several gigabytes of storage space available on their central servers, so before we get started, we will connect to our N drive to carry out all of our practical work over the coming weeks. 
+
+

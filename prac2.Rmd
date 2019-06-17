@@ -302,13 +302,45 @@ If you look at the ```read.csv()``` help file - ```?read.csv``` - you will see t
 
 ```{r}
 # by default in R, the file path should be defined with / but on a #windows file system it is defined with \. Using \\ instead allows R #to read the path correctly – alternatively, just use /
-LondonData<- read.csv("prac2_data/london_catalogue.csv", header = TRUE, sep = ",")
+LondonDataOSK<- read.csv("prac2_data/london_catalogue.csv", header = TRUE, sep = ",")
 ```
 
 This would specify the exact path; that the first row of the file contains header information; and the values in the file are separated with commas (not ; or : as can be the case sometimes).
 
 ## New skool cleaning 
 
+To clean our data as we read it in, we are going to use a package (more about packages later - for now, just think about it as a lovely gift from the R gods) called readr which comes bundled as part of the tidyverse package. If you want to find out more about the Tidyverse (and you really should) then you should start here: https://www.tidyverse.org/ - the Tidyverse package contains almost everything you need to become a kick-ass data scientist. ‘Tidy’ as a concept in data science is well worth reading about and you should start here with Hadley Wickham’s paper - http://vita.had.co.nz/papers/tidy-data.pdf
+
+Anyway, first install the package:
+
+```{r}
+install.packages("tidyverse")
+```
+
+Now we can use the readr package which comes bundled as part of the tidyverse to read in some data (directly from the web this time - read.csv can do this too) and clean text characters out from the numeric columns before they cause problems:
+
+```{r}
+library(tidyverse)
+#wang the data in straight from the web using read_csv, skipping over the 'n/a' entries as you go...
+LondonData <- read_csv("https://files.datapress.com/london/dataset/ward-profiles-and-atlas/2015-09-24T14:21:24/ward-profiles-excel-version.csv", na = "n/a")
+```
+
+**note the use of read_csv here as opposed to read.csv. They are very similar, but read_csv is just a bit better - read this to understand why… Also, for those python fans out there - IT’S NOT THE SAME FUNCTION AS READ_CSV IN PYTHON**
+
+## Examining your new data
+
+25. Your new data has been read in as a data frame / tibble (a tibble is just a data frame with a few extra bells and whistles). If you ever need to check what data type your new data set is, we can use the ```class()``` function:
+
+```{r}
+class(LondonData)
+```
+
+```{r}
+# or, if you have your old skool data from step 24 above
+class(LondonDataOSK)
+```
+
+We can also use the ```class``` function within another two functions (cbind() and lapply()) to check that our data has been read in correctly and that, for example, numeric data haven’t been read in as text or other variables. Run the following line of code:
 
 
 
