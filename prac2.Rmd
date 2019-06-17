@@ -314,7 +314,7 @@ To clean our data as we read it in, we are going to use a package (more about pa
 Anyway, first install the package:
 
 ```{r}
-install.packages("tidyverse")
+install.packages("tidyverse", repos = "https://www.stats.bris.ac.uk/R/")
 ```
 
 Now we can use the readr package which comes bundled as part of the tidyverse to read in some data (directly from the web this time - read.csv can do this too) and clean text characters out from the numeric columns before they cause problems:
