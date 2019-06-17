@@ -13,4 +13,4 @@ RnwWeave: Sweave
 LaTeX: pdfLaTeX
 
 BuildType: Website
-WebsitePath: ~/Teaching/CASA0005
+WebsitePath: N:/Documents/Teaching/CASA0005practicals/CASA0005

@@ -582,7 +582,10 @@ div.tocify {
 <li><p>You have just demonstrated one of the powerful aspects of R, which is that it is an <strong>object oriented</strong> programming language. A, B and C are all objects that have been assigned a value with the &lt;- symbol (you can also use the = sign, but it operates slightly differently to &lt;- in R, plus the arrow assignment has become standard over the years. Use <strong>alt -</strong> to type it automatically). This principle underlies the whole language and enables users to create ever more complex objects as they progress through their analysis. If you type:</p></li>
 </ol>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">ls</span>()</a></code></pre></div>
-<pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
+<pre><code>##  [1] &quot;A&quot;             &quot;B&quot;             &quot;C&quot;             &quot;con&quot;          
+##  [5] &quot;Data1&quot;         &quot;Data2&quot;         &quot;Data3&quot;         &quot;Data4&quot;        
+##  [9] &quot;df&quot;            &quot;LondonData&quot;    &quot;LondonDataOSK&quot; &quot;mycsv&quot;        
+## [13] &quot;shape&quot;</code></pre>
 <p>R will produce a list of objects that are currently active.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">rm</span>(A)</a></code></pre></div>
 <p>will remove the object A from the workspace (do ls() again to check this or look in your workspace window).</p>
@@ -751,15 +754,15 @@ div.tocify {
 <pre><code>## package &#39;tidyverse&#39; successfully unpacked and MD5 sums checked
 ## 
 ## The downloaded binary packages are in
-##  C:\Users\ucfnmac\AppData\Local\Temp\RtmpCkvYqy\downloaded_packages</code></pre>
+##  C:\Users\ucfnmac\AppData\Local\Temp\RtmpAPdJcu\downloaded_packages</code></pre>
 <p>Now we can use the readr package which comes bundled as part of the tidyverse to read in some data (directly from the web this time - read.csv can do this too) and clean text characters out from the numeric columns before they cause problems:</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
-<pre><code>## -- Attaching packages -------------------------------------------------------------------- tidyverse 1.2.1 --</code></pre>
+<pre><code>## -- Attaching packages --------------</code></pre>
 <pre><code>## v ggplot2 3.2.0     v purrr   0.3.2
 ## v tibble  2.1.3     v dplyr   0.8.1
 ## v tidyr   0.8.3     v stringr 1.4.0
 ## v readr   1.3.1     v forcats 0.4.0</code></pre>
-<pre><code>## -- Conflicts ----------------------------------------------------------------------- tidyverse_conflicts() --
+<pre><code>## -- Conflicts -----------------------
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1"><span class="co">#wang the data in straight from the web using read_csv, skipping over the &#39;n/a&#39; entries as you go...</span></a>

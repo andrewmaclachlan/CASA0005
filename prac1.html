@@ -482,17 +482,7 @@ div.tocify {
 </div>
 
 
-<p><font size="5"> Getting Started </font></p>
-<p>One of the issues with GIS is that many of the files we will be working with are quite large. Fortunately, in recent years, UCL has seriously beefed up the storage available for students. You now get 100GB of free storage, which should be plenty for the work you will be doing this year! The Bartlett faculty has several gigabytes of storage space available on their central servers, so before we get started, we will connect to our N drive to carry out all of our practical work over the coming weeks.</p>
 <p><strong>In your N drive: drive, create a new folder called GIS and within this a subfolder called wk1</strong></p>
-<p><font size="5"> Wlecome to the world of GIS </font></p>
-<p>Spatial analysis can yield fascinating insights into geographical relationships. However, at times it can be difficult to work with. You will get lots of error messages and have software crash. The academic staff are here to help you work through these practicals but we do not know everything. It’s a good idea to become familar with online sources of help, such as:</p>
-<ul>
-<li>Stack Exchange <a href="https://stackexchange.com/" class="uri">https://stackexchange.com/</a></li>
-<li>QGIS documemtation <a href="https://docs.qgis.org/3.4/en/docs/index.html" class="uri">https://docs.qgis.org/3.4/en/docs/index.html</a></li>
-<li>R documentation <a href="https://www.rdocumentation.org/" class="uri">https://www.rdocumentation.org/</a></li>
-<li>ArcGIS help pages <a href="https://support.esri.com/en" class="uri">https://support.esri.com/en</a></li>
-</ul>
 <div id="learning-outcomes" class="section level1">
 <h1><span class="header-section-number">1</span> Learning outcomes</h1>
 <p>By the end of this practical you should be able to:</p>
@@ -870,7 +860,7 @@ div.tocify {
 <p>Great, load the sf package so we can read our shapefile in - remember to change to filepath to your shapefile.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">library</span>(sf)</a>
 <a class="sourceLine" id="cb2-2" title="2">shape &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;Prac1_data/statistical-gis-boundaries-london/ESRI/London_Borough_Excluding_MHW.shp&quot;</span>)</a></code></pre></div>
-<pre><code>## Reading layer `London_Borough_Excluding_MHW&#39; from data source `C:\Users\Andy\Documents\Teaching\CASA0005\Prac1_data\statistical-gis-boundaries-london\ESRI\London_Borough_Excluding_MHW.shp&#39; using driver `ESRI Shapefile&#39;
+<pre><code>## Reading layer `London_Borough_Excluding_MHW&#39; from data source `N:\Documents\Teaching\CASA0005practicals\CASA0005\Prac1_data\statistical-gis-boundaries-london\ESRI\London_Borough_Excluding_MHW.shp&#39; using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 33 features and 7 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
